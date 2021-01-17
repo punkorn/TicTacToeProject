@@ -1,0 +1,28 @@
+.sizeinput {
+    width: 7%;
+    height: 7%;
+    display: inline-flex;
+    font-size: 45px;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 0;
+  }
+  .form-group {
+    margin-bottom: 0.45rem !important;
+  }
+    
+.form-setsize {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  }
+   
+  .form-setsize .form-control:focus {
+    z-index: 2;
+  }
+  .form-setsize input[type="number"] {
+    margin-bottom: 1px;
+   border-radius: 0;
+  }
+  h6{font-size: 1.8rem !important;}
