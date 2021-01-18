@@ -1,4 +1,5 @@
-<p align="left" style="font-family:tahoma !important:font-size:8.5px!important">
+ 
+<p align="left" style="font-family:tahoma !important:font-size:8.5em!important">
  
  ## วิธีการคิด
     
