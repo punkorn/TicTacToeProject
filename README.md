@@ -1,61 +1,58 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+<div align="left">
+    ##วิธีการเล่น
+    - * ผู้เล่นจำนวน 2 คน
+    - * กำหนดขนาดของตาราง Tic Tac Toe ได้จากหน้าแรก ขนาดของตารางต่ำสุด 3 และสูงสุด 20 เท่านั้น
+    - * หน้าเล่นเกมส์แสดงตาราง จาก Size ที่กำหนดเข้ามา วนลูปแสดงตารางและเก็บค่าลงตัวแปร Array 2 มิติ (board[][]) 
+    - * เมื่อเริ่มเล่นเกมส์จะเริ่ม จาก X ก่อนเสมอ ต่อจากนั้นจะเป็น O คิดจาก
+        กำหนดตัวแปรมาเก็บจำนวนครั้งที่เล่น =  countPlay มีค่าเท่ากับ 0 
+        ใช้ script ตรวจสอบผู้เล่นคน่อไป คำนวณจากจำนวนครั้งที่เล่น =>countPlay%2  = nextPlayer
+            ถ้า nextPlayer = 0 คือ X
+            ถ้า nextPlayer = 1 คือ O
+            และเพิ่มค่า countPlay ต่อๆไป
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+        - ** เมื่อจำนวนครั้งที่เล่นมีค่ามากกว่าหรือเท่ากับ (countPlay) จำนวนครั้งที่จะมีโอกาสชนะเร็วสุด คิดจาก (sizeoftable * 2)-1
+            จะส่งไปหาผู้ชนะ ที่ checkForWinOrTie Function ที่ฟังก์ชันนี้จะเริ่มหาคนชนะจาก
+    1. ##ตรวจสอบจากแนวตั้ง CheckVerticalValue 
+         - วนลูป 2 ชั้นตาม size ของตาราง Loop แรกคือ Row Loop 2 คือ Column โดยเริ่มจากตำแหน่งที่ Row = 0 และ Column = 0 
+         ถ้าค่าที่รับเข้ามาเป็นค่าว่างก็จะออกจาก Loop 2 เพื่อไปขึ้นแถวใหม่  
+         ถ้าค่าที่รับเข้ามามีค่าจะตรวจสอบว่าเป็น X หรือ O โดยจะคิดจาก  วน Loop ที่ 2 (0 ถึง < size) 
+         เป็น ค่า Array ตัวแรก เพราะเราจะหาค่าตามแนวตั้ง และ Array ตัวที่ 2 คือ Loop 1 ( $board[loop2][loop1])
+         และบวกจำนวนครั้งเพื่อตรวจสอบว่าจำนวนครั้งนั้นเท่ากับ Size ของตาราง
+         ถ้าจำนวนครั้งนั้นเท่ากับ Size ของตารางแล้วก็จะ return ผู้ชนะกลับไป ถ้าไม่มีผู้ชนะ จะ return null 
 
-## About Laravel
+  2. ##ตรวจสอบ จากแนวนอน CheckHorizontalValue  
+    - วนลูป 2 ชั้นตาม size ของตาราง Loop แรกคือ Row Loop 2 คือ Column โดยเริ่มจากตำแหน่งที่ Row = 0 และ Column = 0 
+        ถ้าค่าที่รับเข้ามาเป็นค่าว่างก็จะออกจาก Loop 2 เพื่อไปขึ้นแถวใหม่
+        ถ้าค่าที่รับเข้ามามีค่าจะตรวจสอบว่าเป็น X หรือ O โดยจะคิดจาก  วน Loop2 ที่ 2 (0 ถึง < size)   
+        เป็น ค่า Array ตัวที่1 Loop 1 เพราะเราจะหาค่าตามแนวนอน และ Array ตัวที่ 2 คือ Loop 2 ( $board[loop1][loop2])
+        และบวกจำนวนครั้งเพื่อตรวจสอบว่าจำนวนครั้งนั้นเท่ากับ Size ของตาราง
+        ถ้าจำนวนครั้งนั้นเท่ากับ Size ของตารางแล้วก็จะ return ผู้ชนะกลับไป ถ้าไม่มีผู้ชนะ จะ  return null  
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+   3. ##ตรวจสอบจากแนวทแยงจากซ้ายตัวบนแถวแรก CheckDiagonalLeftTopToBottomValue
+        - กำหนดเริ่มต้นเป็น 1 เพราะจะตรวจสอบแถวที่ 2 เปรียบเทียบกับแถวแรกบนสุด  และมีค่าน้อยกว่า sizeoftable -1   
+        เพราะว่าจะ Check ค่าจาก Row แรก และ Column แรก เพราะเป็นแนวทแยงบนสุดลงล่างสุด   ($board[$i][$i] != $board[$i-1][$i-1] ) 
+        หาผู้ชนะจาก โดยเปรียบเทียบจากแถวที่ 2 มีค่าเท่ากับ Row แรก หรือไม่  ถ้าไม่เท่ากัน return null
+        ถ้าใช่ จะวนลูปไปยังลำดับถัดไป เปรียบเทียบค่ากับลำดับก่อนหน้าไปเรื่อยๆ จนครบ Loop ตามจำนวน size 
+        ถ้าวน Loop จนครบ ไม่ break จะ return ผู้ชนะที่ตำแหน่ง Row แรก และ Column 
+   
+   4. ##ตรวจสอบจากแนวทแยงจากซ้ายตัวล่างสุดแถวแรกไปข้างบนตัวสุดท้ายของแถว CheckDiagonalLeftBottomToTopValue
+        - กำหนดเริ่มต้นเป็น 1 เพราะจะตรวจสอบแถวที่ 2 เปรียบเทียบกับแถวแรกล่างสุดของตาราง 
+        เพราะว่าจะ Check ค่าจาก Row แรก และ Column แรก ล่างสุดคือ size ของตาราง เพราะเป็นแนวทแยงล่างสุดไปบนสุด($board[$size-$i-1][$i]!= $board[$size - $i][$i-1])   
+        หาผู้ชนะจาก โดยเปรียบเทียบจากแถวที่ 2 จากล่างขึ้นบน มีค่าเท่ากับ Row แรกล่างสุดคือ size ของตาราง หรือไม่  ถ้าไม่เท่ากัน return null
+        ถ้าใช่ จะวนลูปไปยังลำดับถัดไป เปรียบเทียบค่ากับลำดับก่อนหน้าไปเรื่อยๆ จนครบ Loop ตามจำนวน size 
+        ถ้าวน Loop จนครบ ไม่ break จะ return ผู้ชนะที่ตำแหน่ง Row แรก และ Column 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    5. ถ้าจำนวนครั้งที่เล่น เท่ากับ จำนวน size * size แล้วยังไม่มีคนชนะ return NotWinALL
+  
+    - *  เมื่อส่งค่ามาหาผู้ชนะเรียบร้อยแล้ว ค่าที่ส่งกลับมา ถ้าเป็น X หรือ O หรือไม่มีคนชนะ 
+        และแสดงปุ่มให้ คลิ๊ก เพื่อเล่นเกมส์อีกครั้ง
+    - *  ถ้าค่าที่ส่งกลับมาเป็นค่าว่างก็จะเล่นไปอีกครั้ง และส่งค่ากลับไป checkForWinOrTie Function อีกครั้ง 
+        จนกว่าจะครบจำนวนที่ต้องเล่นหรือมีผู้ชนะ
+    <p> ## Demo 4*4 </p>
+    <p style="padding-top:8px;"> 00 | 01 | 02 | 03 </p>
+    <p style="padding-top:8px;"> 10 | 11 | 12 | 13 </p>
+    <p style="padding-top:8px;"> 20 | 21 | 22 | 23 </p>    
+    <p style="padding-top:8px;"> 30 | 31 | 32 | 33 </p>
+</div>
+     
+    
