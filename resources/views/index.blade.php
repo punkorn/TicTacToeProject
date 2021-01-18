@@ -10,7 +10,7 @@
             </div>
             <div class="col-md-12  mb-2">
                 <input type="number" class="form-control" id="tictactoeSize" name="tictactoeSize" min="3"
-                max="100" value="4" required>
+                max="20" value="4" required>
                 <div class="invalid-feedback"> Please provide a valid size of table.</div>
             </div>
         </div>
